@@ -1,7 +1,8 @@
 package XMLParser.Parse;
 
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.is;
+import static org.hamcrest.Matchers.*;
+
 import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertTrue;
 import static org.hamcrest.Matchers.containsInAnyOrder;
@@ -55,12 +56,20 @@ public class XMLParserTest extends ParseXML {
 	Element eElement;
 	String csvFile = "./resources/ServersList.csv";
 	Map<String, String> hmap;
-	String key;
-	String value;
-
+	Map<String, String> map;
+	String attribute_02 = "Name";
+	String attribute_04 = "Status";
+	String actualName;
+	String expected;
+	String actual;
+	String actualStatus;
+	String expectedStatus;
+	String Name;
+	String Status;
 	@BeforeTest
-	public void beforeClass() throws ParserConfigurationException, SAXException, IOException {
-
+	public void beforeMethod() throws ParserConfigurationException, SAXException, IOException { //THIS SHOULD ALLWAYS BE "beforeMethod" NOT "beforeClass" !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+																								//"beforeClass" ONLY UPLOADS DATA ONCE AND USES IT FOR ALL OF THE TEST
+																								// "beforeMethod" UPLOADS DATA for EVERY TEST STARTS SAPARETLY
 		DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
 		DocumentBuilder dbBuilder = dbFactory.newDocumentBuilder();
 		File fXmlFile = new File("./resources/SterlingServices.xml");
@@ -89,55 +98,64 @@ public class XMLParserTest extends ParseXML {
 				for (int i = 0; i < nList.getLength(); i++) {
 					nNode = nList.item(i);
 					eElement = (Element) nNode;
-
+					
+					
 					hmap = new HashMap<String, String>();
 
-					key = eElement.getAttribute(attribute_02);
-					value = eElement.getAttribute(attribute_04);
+					Name = eElement.getAttribute(attribute_02);
+					Status = eElement.getAttribute(attribute_04);
+					hmap.put(Name, Status);
+					
 
-					// List<String> value = new ArrayList<String>();
-
-					// value.add(eElement.getAttribute(attribute_01));
-					// value.add(eElement.getAttribute(attribute_03));
-					// value.add(eElement.getAttribute(attribute_04));
-
-					hmap.put(key, value);
-					System.out.println("Actual:" + " " + key + " " + value);
-
-					//for (String Key : hmap.keySet()) {
-						// List<String> atributes = hmap.get(Key);
-						// System.out.println("Key :" + Key);
-						// System.out.println("Value : " + atributes);
-
-						// System.out.println("=====================");
+					
+					for (String Key : hmap.keySet()) {
+						 actual = hmap.get(Key);
+						// System.out.println("Key actual :" + Key);
+						// System.out.println("Value actual : " + actual);
+						// System.out.println("******");
 					}
-
+					
 				}
+				}
+		
+		// List<String> value = new ArrayList<String>();
+
+		// value.add(eElement.getAttribute(attribute_01));
+		// value.add(eElement.getAttribute(attribute_03));
+		// value.add(eElement.getAttribute(attribute_04));
+		
+		
+		//System.out.println("Actual:" + " " + key + " " + value);
+
+     		
+		
 		}
 	
 
 	@Test(dataProvider = "dp")
 	public void convert(String Name, String Status) {
+		
+		map = new HashMap<String, String>();
+		map.put(Name, Status);
 
-		Map<String, String> map = new HashMap<String, String>();
-		String key2 = "DesignStudioDCCancel" ;
-		String value2 = "Active";
+		for (String Key : map.keySet()) {
+		 expected = map.get(Key);
+		// System.out.println("Key expected:" + Key);
+		// System.out.println("Value expected : " + expected);
+		}
 		
-		map.put(key2 , value2);
-		//System.out.println("Expected:" + " " + key + " " + value);
+		
 
-		//for (Entry Key : map.keySet()) {
-		// String atributes = map.get(Key);
-		// System.out.println("Key :" + Key);
-		// System.out.println("Value : " + atributes);
+		assertThat(expected, is(actual));
 		
-		map.get(hmap);
-		assertEquals(map, hmap);
 		
-		//System.out.println(hmap.equals(key2));
-		//System.out.println(one);
+
+	
 		
 				}
+	
+	
+
 
 	@DataProvider(name = "dp")
 

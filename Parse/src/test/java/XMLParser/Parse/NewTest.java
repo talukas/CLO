@@ -62,7 +62,7 @@ public class NewTest implements ITest {
 				//System.out.println("NAME:" + eElement.getAttribute(attribute_02));
 				//System.out.println("TYPE:" + eElement.getAttribute(attribute_03));
 				//System.out.println("STATUS:" + eElement.getAttribute(attribute_04));
-				
+		
 
 				HashMap<String, List<String>> hmap = new HashMap<String, List<String>>();
 
@@ -79,8 +79,8 @@ public class NewTest implements ITest {
 
 				for (String Key : hmap.keySet()) {
 					List<String> atributes = hmap.get(Key);
-					//System.out.println("Key :" + Key);
-					//System.out.println("Value : " + atributes);
+					System.out.println("Key :" + Key);
+					System.out.println("Value : " + atributes);
 
 					//System.out.println("=====================");
 				}
