@@ -1,17 +1,20 @@
 package XMLParser.Parse;
 
 import org.testng.annotations.Test;
+import org.testng.ITest;
+import org.testng.annotations.BeforeClass;
+import org.testng.annotations.Test;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
+import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.DataProvider;
-import org.testng.annotations.Test;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.*;
+
 import static org.testng.Assert.assertNotNull;
-import static org.testng.Assert.assertNull;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -27,77 +30,112 @@ import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 
-import org.testng.ITest;
 import org.testng.annotations.BeforeClass;
-import org.testng.annotations.BeforeMethod;
 
-public class NewTest implements ITest {
+public class DataP implements ITest {
+
 	NodeList nList;
-	Node nNode;
 	Element eElement;
-	String csvFile = "SterlingServices.csv";
+	String attribute_01;
+	String attribute_02;
+	String attribute_03;
+	String attribute_04;
+	File fXmlFile;
+	List<String> value;
+	List<String> atributes;
+	String key;
 	private String test_name="";
+
 	public String getTestName(){
-		return test_name;
-	}
+	return test_name;}
+
 	private void setTestName(String a) {
-		test_name = a;
-	}
+	test_name = a; }
+
 	@Override
-  @Test(dataProvider = "dp")
-  public void f(String a, String b) throws SAXException, IOException, ParserConfigurationException {
-	  String attribute_01 = "Id";
-		String attribute_02 = b;
-		String attribute_03 = "Type";
-		String attribute_04 = "Status";
+	@Test(dataProvider = "dp")
+	public void dataP(Object... parameters) throws SAXException, IOException, ParserConfigurationException {
+
+		attribute_01 = "Id";
+		attribute_02 = "Name";
+		attribute_03 = "Type";
+		attribute_04 = "Status";
 
 		if (nList != null && nList.getLength() > 0)
 			for (int i = 0; i < nList.getLength(); i++) {
-				nNode = nList.item(i);
+				Node nNode = nList.item(i);
 				eElement = (Element) nNode;
 				String ab = eElement.getAttribute(attribute_04);
-				assertThat(ab, is("Active"));
-				//System.out.println("TAG:" + nNode.getNodeName());
-				//System.out.println("ID:" + eElement.getAttribute(attribute_01));
-				//System.out.println("NAME:" + eElement.getAttribute(attribute_02));
-				//System.out.println("TYPE:" + eElement.getAttribute(attribute_03));
-				//System.out.println("STATUS:" + eElement.getAttribute(attribute_04));
-				
+
+				// System.out.println("TAG:" + nNode.getNodeName());
+				// System.out.println("ID:" + eElement.getAttribute(attribute_01));
+				//System.out.println("Name:" + eElement.getAttribute(attribute_02));
+				// System.out.println("STATUS:" + eElement.getAttribute(attribute_03));
+				// System.out.println("TYPE:" + eElement.getAttribute(attribute_04));
 
 				HashMap<String, List<String>> hmap = new HashMap<String, List<String>>();
 
-				String key = eElement.getAttribute(attribute_02);
+				key = eElement.getAttribute(attribute_02);
+				
 
-				List<String> value = new ArrayList<String>();
+				value = new ArrayList<String>();
 
 				value.add(eElement.getAttribute(attribute_01));
 				value.add(eElement.getAttribute(attribute_03));
 				value.add(eElement.getAttribute(attribute_04));
 
 				hmap.put(key, value);
-				assertNotNull(key);
 
 				for (String Key : hmap.keySet()) {
-					List<String> atributes = hmap.get(Key);
+					atributes = hmap.get(Key);
 					//System.out.println("Key :" + Key);
 					//System.out.println("Value : " + atributes);
 
 					//System.out.println("=====================");
+
+					assertThat(key, is(allOf(notNullValue())));
+					assertThat(ab, is("Active"));
+
 				}
 			}
-  }
-  
- 
-  @BeforeMethod(alwaysRun = true)
-  public void beforeClass(Method method, Object ... parameters) throws ParserConfigurationException, SAXException, IOException {
-	  setTestName(method.getName());
-		Override a = method.getAnnotation(Override.class);
-		String testCaseId = (String) parameters[a.id()];
-		setTestName(testCaseId);
-	  
-	  DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
+	}
+
+	@DataProvider(name = "dp")
+
+	public Iterator<String[]> american() throws InterruptedException, IOException {
+
+		String fXmlLine = "";
+
+		String[] a = null;
+
+		ArrayList<String[]> al = new ArrayList<>();
+
+		BufferedReader br = new BufferedReader(new FileReader(fXmlFile));
+
+		while ((fXmlLine = br.readLine()) != null) {
+
+			a = fXmlLine.split("");
+
+			al.add(a);
+
+		}
+
+		br.close();
+
+		return al.iterator();
+	}
+
+	@BeforeClass(alwaysRun = true)
+	public void beforeClass() throws SAXException, IOException, ParserConfigurationException {
+
+		//setTestName(method.getName());
+		//Override a = method.getAnnotation(Override.class);
+		//String testCaseId = (String) parameters[a.id()];
+		//setTestName(testCaseId);
+
+		DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
 		DocumentBuilder dbBuilder = dbFactory.newDocumentBuilder();
-		File fXmlFile = new File("./resources/SterlingServices.xml");
+		fXmlFile = new File("./resources/SterlingServices.xml");
 		if (fXmlFile.exists()) {
 			Document doc = dbBuilder.parse(fXmlFile);
 			Element docEle = doc.getDocumentElement();
@@ -113,32 +151,10 @@ public class NewTest implements ITest {
 			System.out.println("Total Servers: " + nList.getLength());
 
 			System.out.println("=====================");
-}
-  }	
-		
-		@DataProvider(name = "dp")
 
-		  public Iterator<String[]> american() throws InterruptedException, IOException {
+			assertThat(nList.getLength(), is(191));
 
-		  String csvLine = "";
+		}
 
-		  String[] a = null;
-
-		  ArrayList<String[]> al = new ArrayList<>();
-
-		  BufferedReader br = new BufferedReader(new FileReader(csvFile));
-
-		  while ((csvLine = br.readLine()) != null) {
-
-		  a = csvLine.split(",");
-
-		  al.add(a);
-
-		  }
-
-		  br.close();
-
-		  return al.iterator();
-  }
-  
+	}
 }
