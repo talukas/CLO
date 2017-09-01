@@ -29,8 +29,6 @@ ReturnOrderInvoiceServer,Active
 BONotificationServer,Active
 DesignStudioDCBackorder,Active
 OrderDropAckServer,Active
-ReturnOrderInvoiceServer,Active
-OrderDropAckServer,Active
 WSIOrderNotificationStatus,Active
 ConsumeStoreInvLoadServer,Active
 ReleaseServer,Active
@@ -130,14 +128,12 @@ CatalogHeaderServer,Active
 CreateStoreReturnServer,Active
 WSIProcessFraudReviewResponseServer,Active
 OrderModServer,Active
-DSShipmentLabelGenServer_LOW,Active
 WISMOMfgServer,Active
 DSPickListAckServer_LOW,Active
 UIETAUploadServer,Active
 CreateNodeOrderIntServer,Active
 RTAMStatusChangeServer,Active
 DS_CreateInvoiceCount,Active
-CreateNodeOrderIntServer,Active
 EDS_ProcessCreateOrder,Active
 ECommECDDCancelResvMsgServer,Active
 WorkOrderHistPurgeAgent,Active
@@ -174,7 +170,6 @@ TransitionChargesServer,Active
 ProcessWorkOrderUpdateServer,Active
 CatalogSKUPricingServer,Active
 RETURNSHPPRG,Active
-WISMOContainerActivityAndPODServer,Active
 WISMOContainerActivityAndPODServer,Active
 CreateContinuityOrder,Active
 SKUPurgeServer,Active
